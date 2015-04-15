@@ -1,0 +1,92 @@
+<!doctype HTML>
+<html ng-app="demo">
+<head>
+  <style>
+    div{border:1px solid black;padding:16px;}
+  </style>
+</head>
+<body>
+
+  <div ui-view="header"></div>
+  <div ui-view="content"></div>
+  <div ui-view="footer"></div>
+
+</body>
+</html>
+
+<script src="../angular.js"></script>
+<script src="../angular-ui-router.js"></script>
+<script src="../underscore.js"></script>
+
+<script>
+
+var app = angular.module('demo', ['ui.router']);
+
+app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('home', {
+            url:'/',
+            views: {
+              'header': {
+                templateUrl:'partials/header.html',
+                controller: 'HomeCtrl'
+              },
+              'content': {
+                templateUrl:'partials/content.html',
+                controller: 'HomeCtrl'
+              },
+              'footer': {
+                templateUrl:'partials/footer.html',
+                controller: 'HomeCtrl'
+              },
+
+            }
+        })
+
+        .state('cars', {
+            url:'/',
+            views: {
+              'header': {
+                templateUrl:'partials/header.html',
+                controller: 'HomeCtrl'
+              },
+              'content': {
+                templateUrl:'partials/cars.html',
+                controller: 'HomeCtrl'
+              },
+              'footer': {
+                templateUrl:'partials/footer.html',
+                controller: 'HomeCtrl'
+              },
+            }
+        })
+
+
+        .state('bikes', {
+            url:'/',
+            views: {
+              'header': {
+                templateUrl:'partials/header.html',
+                controller: 'HomeCtrl'
+              },
+              'content': {
+                templateUrl:'partials/bikes.html',
+                controller: 'HomeCtrl'
+              },
+              'footer': {
+                templateUrl:'partials/footer.html',
+                controller: 'HomeCtrl'
+              },
+            }
+        })
+
+
+}]);
+
+app.controller('HomeCtrl', [function(){
+
+}]);
+
+</script>
