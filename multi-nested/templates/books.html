@@ -1,0 +1,7 @@
+<ul>
+  <li ui-sref-action="selected" ng-repeat="book in books">
+    <a ui-sref=".detail({ id: book.id })">{{book.name}}</a>
+  </li>
+</ul>
+
+<div ui-view="detail"></div>

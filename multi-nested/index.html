@@ -1,0 +1,139 @@
+<!doctype HTML>
+
+<html ng-app="demo">
+<head>
+  <style>
+    div{border:1px solid black;padding:16px;}
+  </style>
+</head>
+<body>
+
+  <div ui-view="header"></div>
+  <div ui-view="content"></div>
+  <div ui-view="footer"></div>
+
+</body>
+</html>
+
+<script src="../angular.js"></script>
+<script src="../angular-ui-router.js"></script>
+<script src="../underscore.js"></script>
+
+<script>
+
+var app = angular.module('demo', ['ui.router']);
+
+app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('app', {
+            url:'/',
+            views: {
+              'header': {
+                templateUrl:'partials/header.html',
+                controller: 'HomeCtrl'
+              },
+              'content': {
+                templateUrl:'partials/content.html',
+                controller: 'HomeCtrl'
+              },
+              'footer': {
+                templateUrl:'partials/footer.html',
+                controller: 'HomeCtrl'
+              },
+            }
+        })
+
+        .state('app.cars', {
+            url:'cars',
+            views: {
+              'content@': {
+                templateUrl:'partials/cars.html',
+                controller: 'HomeCtrl'
+              },
+            }
+        })
+
+        .state('app.bikes', {
+            url:'bikes',
+            views: {
+              'content@': {
+                templateUrl:'partials/bikes.html',
+                controller: 'HomeCtrl'
+              },
+              'footer@': {
+                templateUrl:'partials/footer2.html',
+                controller: 'HomeCtrl'
+              },
+            }
+        })
+
+        .state('app.books', {
+            url:'books',
+            views: {
+              'content@': {
+                templateUrl:'templates/books.html',
+                controller: 'BooksCtrl'
+              },
+            }
+        })
+
+        .state('app.books.detail', {
+          url: '/:id',
+          views: {
+            'detail@app.books':{
+              templateUrl:'templates/books-detail.html',
+              controller: 'BooksDetailCtrl'
+            }
+          }
+        })
+;
+
+}]);
+
+app.controller('HomeCtrl', [function(){
+
+}]);
+
+
+
+app.factory('BookService', function(){
+  var books = [{
+      id: 1,
+      name: 'Genesis',
+      description: 'The story of mans creation and fall into exile.'
+  },
+  {
+      id: 2,
+      name: 'Ruth',
+      description: 'A good woman remains faithful to her family and finds love in a surprising place.'
+  },
+  {
+      id: 3,
+      name: 'Esther',
+      description: 'A young queen risks her life to save her people from the brink of death.'
+  }];
+
+
+  return {
+      list: function(){
+          return books;
+      },
+      find: function(id){
+          return _.find(books, function(book){return book.id == id});
+      }
+  };
+});
+
+app.controller('BooksCtrl', ['$scope', 'BookService', function($scope, BookService){
+  $scope.books = BookService.list();
+}]);
+
+app.controller('BooksDetailCtrl', ['$scope', '$stateParams', 'BookService',
+function($scope, $stateParams, BookService){
+  $scope.selectedBook = BookService.find($stateParams.id);
+}]);
+
+
+</script>

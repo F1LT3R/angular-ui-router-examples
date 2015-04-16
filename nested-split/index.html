@@ -1,0 +1,80 @@
+<!doctype HTML>
+<html ng-app="demo">
+<head>
+  <style>
+    div{border:1px solid black;padding:16px;}
+  </style>
+</head>
+<body>
+
+  <div id ="content" ui-view></div>
+
+</body>
+</html>
+
+<script src="../angular.js"></script>
+<script src="../angular-ui-router.js"></script>
+<script src="../underscore.js"></script>
+
+<script>
+
+var app = angular.module('demo', ['ui.router']);
+
+app.factory('BookService', function(){
+  var books = [{
+      id: 1,
+      name: 'Genesis',
+      description: 'The story of mans creation and fall into exile.'
+  },
+  {
+      id: 2,
+      name: 'Ruth',
+      description: 'A good woman remains faithful to her family and finds love in a surprising place.'
+  },
+  {
+      id: 3,
+      name: 'Esther',
+      description: 'A young queen risks her life to save her people from the brink of death.'
+  }];
+
+
+  return {
+      list: function(){
+          return books;
+      },
+      find: function(id){
+          return _.find(books, function(book){return book.id == id});
+      }
+  };
+});
+
+app.config(['$stateProvider', '$urlRouterProvider',
+  function($stateProvider, $urlRouterProvider) {
+
+    $urlRouterProvider.otherwise('/books');
+
+    $stateProvider
+        .state('books', {
+            url:'/books',
+            templateUrl: 'templates/books.html',
+            controller: 'BooksCtrl'
+        })
+        .state('detail', {
+            url: '/detail/:id',
+            templateUrl: 'templates/books-detail.html',
+            controller: 'BooksDetailCtrl'
+        });
+}]);
+
+app.controller('BooksCtrl', ['$scope', 'BookService', function($scope, BookService){
+  $scope.books = BookService.list();
+}]);
+
+app.controller('BooksDetailCtrl', ['$scope', '$stateParams', 'BookService',
+function($scope, $stateParams, BookService){
+  $scope.selectedBook = BookService.find($stateParams.id);
+}]);
+
+
+
+</script>
