@@ -1,6 +1,6 @@
 # UI Router Examples
 
-Examples, based on FunnyCat's blog post at: http://www.funnyant.com/angularjs-ui-router/
+Examples, based on FunnyAnt's blog post at: http://www.funnyant.com/angularjs-ui-router/
 
 
 ## Demos
